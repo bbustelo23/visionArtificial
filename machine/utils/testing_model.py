@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import glob
 
-from utils.hu_moments_generation import hu_moments_of_file
+from machine.utils.hu_moments_generation import hu_moments_of_file
 from utils.label_converters import int_to_label
 
 
