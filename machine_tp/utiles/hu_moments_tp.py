@@ -1,3 +1,8 @@
+import cv2
+import numpy as np
+import math
+
+
 def hu_moments_of_file(filename):
     image = cv2.imread(filename)
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
@@ -7,8 +12,8 @@ def hu_moments_of_file(filename):
     bin = 255 - bin
 
     # TÉCNICAS DE LIMPIEZA MEJORADAS
-    kernel_small = numpy.ones((3, 3), numpy.uint8)
-    kernel_medium = numpy.ones((5, 5), numpy.uint8)
+    kernel_small = np.ones((3, 3), np.uint8)
+    kernel_medium = np.ones((5, 5), np.uint8)
     
     # 1. Opening para eliminar ruido pequeño
     bin = cv2.morphologyEx(bin, cv2.MORPH_OPEN, kernel_small)
@@ -24,13 +29,13 @@ def hu_moments_of_file(filename):
     
     if not contours:
         # Si no se encuentran contornos, devolver momentos de Hu nulos
-        return numpy.zeros((7, 1))
+        return np.zeros((7, 1))
     
     # Encontrar el contorno con mayor área
     shape_contour = max(contours, key=cv2.contourArea)
     
     # 5. Crear imagen limpia solo con el objeto principal
-    clean_image = numpy.zeros_like(bin)
+    clean_image = np.zeros_like(bin)
     cv2.fillPoly(clean_image, [shape_contour], 255)
     
     # 6. Suavizado final
