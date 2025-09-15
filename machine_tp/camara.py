@@ -15,7 +15,7 @@ print("¡Modelo entrenado y listo!")
 # Creamos un diccionario para saber qué significa cada predicción del modelo
 # IMPORTANTE: Asegúrate de que el orden sea el mismo que usaste para entrenar
 # (por ejemplo, si tus datos de entrenamiento están como estrella, rectangulo, triangulo)
-labels = {0: 'Estrella', 1: 'Rectangulo', 2: 'Triangulo'}
+labels = {0: 'estrella_tp', 1: 'rectangulo_tp', 2: 'triangulo_tp'}
 
 
 # --- 2. CONFIGURACIÓN DE MEDIAPIPE PARA DETECCIÓN DE MANOS ---
