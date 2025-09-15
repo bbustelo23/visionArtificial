@@ -3,6 +3,30 @@ import numpy as np
 import math
 
 
+# Escribo los valores de los momentos de Hu en el archivo
+def write_hu_moments(label, writer):
+    files = glob.glob('./shapes.tp/' + label + '/*')  # label recibe el nombre de la carpeta
+    hu_moments = []
+    for file in files:
+        hu_moments.append(hu_moments_of_file(file))
+    for mom in hu_moments:
+        flattened = mom.ravel()  # paso de un array de arrays a un array simple.
+        row = numpy.append(flattened, label)  # le metes el flattened array y le agregas el label
+        writer.writerow(row)  # Escribe una linea en el archivo.
+
+
+def generate_hu_moments_file():
+    with open('archivo_hu_tp/figuras_hu_tp2.csv', 'w',
+              newline='') as file:  # Se genera un archivo nuevo (W=Write)
+        writer = csv.writer(file)
+        # Ahora escribo los momentos de Hu de cada uno de las figuras. Con el string "rectangle...etc" busca en la carpeta donde estan cada una de las imagenes
+        # generar los momentos de Hu y los escribe sobre este archivo. (LOS DE ENTRENAMIENTO).
+        write_hu_moments("estrella_tp", writer)
+        write_hu_moments("rectangulo_tp", writer)
+        write_hu_moments("triangulo_tp", writer)
+
+
+
 def hu_moments_of_file(filename):
     image = cv2.imread(filename)
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
