@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import math
+import glob
+import csv
 
 
 # Escribo los valores de los momentos de Hu en el archivo
@@ -11,7 +13,7 @@ def write_hu_moments(label, writer):
         hu_moments.append(hu_moments_of_file(file))
     for mom in hu_moments:
         flattened = mom.ravel()  # paso de un array de arrays a un array simple.
-        row = numpy.append(flattened, label)  # le metes el flattened array y le agregas el label
+        row = np.append(flattened, label)  # le metes el flattened array y le agregas el label
         writer.writerow(row)  # Escribe una linea en el archivo.
 
 
