@@ -7,7 +7,7 @@ from utiles.labels_tp import int_to_label
 
 
 def load_and_test(model):
-    files = glob.glob('../machine/shapes/testing/*')
+    files = glob.glob('../machine/shapes/testeo_tp/*')
     for f in files:
         hu_moments = hu_moments_of_file(f) # Genera los momentos de hu de los files de testing
         sample = np.array([hu_moments], dtype=np.float32) # numpy
