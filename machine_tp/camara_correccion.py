@@ -11,7 +11,7 @@ model = train_model()
 print("¡Modelo entrenado y listo!")
 
 # Diccionario para traducir la predicción del modelo a texto
-labels = {0: 'Estrella', 1: 'Rectangulo', 2: 'Triangulo'}
+labels = {0: 'estrella_tp', 1: 'rectangulo_tp', 2: 'triangulo_tp'}
 
 # --- 2. INICIAR LA CÁMARA ---
 capture = cv2.VideoCapture(0)
