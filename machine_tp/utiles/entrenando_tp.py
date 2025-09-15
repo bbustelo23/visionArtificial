@@ -12,7 +12,7 @@ trainLabels = []
 def load_training_set():
     global trainData
     global trainLabels
-    with open('archivo_hu_tp/figuras_hu_tp2.csv') as csv_file:
+    with open('archivo_hu_tp/figuras_hu.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         for row in csv_reader:
             class_label = row.pop() # saca el ultimo elemento de la lista
