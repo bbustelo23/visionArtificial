@@ -18,7 +18,7 @@ def write_hu_moments(label, writer):
 
 
 def generate_hu_moments_file():
-    with open('archivo_hu_tp/figuras_hu_tp2.csv', 'w',
+    with open('archivo_hu_tp/figuras_hu.csv', 'w',
               newline='') as file:  # Se genera un archivo nuevo (W=Write)
         writer = csv.writer(file)
         # Ahora escribo los momentos de Hu de cada uno de las figuras. Con el string "rectangle...etc" busca en la carpeta donde estan cada una de las imagenes

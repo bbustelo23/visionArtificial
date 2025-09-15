@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import glob
 
-from machine_tp.utiles.hu_moments_tp import hu_moments_of_file
-from machine_tp.utiles.labels_tp import int_to_label
+from utiles.hu_moments_tp import hu_moments_of_file
+from utiles.labels_tp import int_to_label
 
 
 def load_and_test(model):

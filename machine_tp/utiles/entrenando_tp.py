@@ -3,7 +3,7 @@ import csv
 
 import numpy as np
 
-from machine_tp.utiles.labels_tp import label_to_int
+from utiles.labels_tp import label_to_int
 
 trainData = []
 trainLabels = []
