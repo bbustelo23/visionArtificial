@@ -23,11 +23,11 @@ cv2.namedWindow('6. Resultado Final', cv2.WINDOW_NORMAL)
 
 
 cv2.moveWindow('1. Imagen Original', 50, 50)
-cv2.moveWindow('2. Escala de Grises', 450, 50)
-cv2.moveWindow('3. Imagen Binarizada', 850, 50)
-cv2.moveWindow('4. Morfologia', 50, 500)
-cv2.moveWindow('5. Contornos Detectados', 450, 500)
-cv2.moveWindow('6. Resultado Final', 850, 500)
+cv2.moveWindow('2. Escala de Grises', 350, 50)
+cv2.moveWindow('3. Imagen Binarizada', 650, 50)
+cv2.moveWindow('4. Morfologia', 50, 400)
+cv2.moveWindow('5. Contornos Detectados', 350, 400)
+cv2.moveWindow('6. Resultado Final', 650, 400)
 
 
 def nothing(x):
@@ -59,7 +59,7 @@ while True:
     )
     cv2.imshow('3. Imagen Binarizada', bin_img)
 
-    kernel = np.ones((5, 5), np.uint8)
+    kernel = np.ones((3,3), np.uint8)
     morphed = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel)
     morphed = cv2.morphologyEx(morphed, cv2.MORPH_CLOSE, kernel)
     cv2.imshow('4. Morfologia', morphed)
