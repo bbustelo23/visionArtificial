@@ -4,10 +4,7 @@ import numpy as np
 import math
 import cv2
 
-# --- 1. ENTRENAR EL MODELO UNA SOLA VEZ ---
-print("Entrenando el modelo, por favor espera...")
 model = train_model()
-print("¡Modelo entrenado y listo!")
 
 capture = cv2.VideoCapture(0)
 if not capture.isOpened():
@@ -16,8 +13,7 @@ if not capture.isOpened():
 else:
     print("Cámara iniciada. Presiona 'q' para salir.")
 
-# --- INICIO DE LA MODIFICACIÓN: Reordenar Ventanas ---
-# Crear ventanas con el orden lógico correcto
+
 cv2.namedWindow('1. Imagen Original', cv2.WINDOW_NORMAL)
 cv2.namedWindow('2. Escala de Grises', cv2.WINDOW_NORMAL)
 cv2.namedWindow('3. Imagen Binarizada', cv2.WINDOW_NORMAL)
@@ -25,41 +21,35 @@ cv2.namedWindow('4. Morfologia', cv2.WINDOW_NORMAL)
 cv2.namedWindow('5. Contornos Detectados', cv2.WINDOW_NORMAL)
 cv2.namedWindow('6. Resultado Final', cv2.WINDOW_NORMAL)
 
-# Posicionar ventanas para que reflejen el nuevo flujo de procesamiento
+
 cv2.moveWindow('1. Imagen Original', 50, 50)
 cv2.moveWindow('2. Escala de Grises', 450, 50)
 cv2.moveWindow('3. Imagen Binarizada', 850, 50)
 cv2.moveWindow('4. Morfologia', 50, 500)
 cv2.moveWindow('5. Contornos Detectados', 450, 500)
 cv2.moveWindow('6. Resultado Final', 850, 500)
-# --- FIN DE LA MODIFICACIÓN ---
 
 
-# --- TRACKBAR PARA AJUSTAR ILUMINACIÓN (parámetro C de adaptiveThreshold) ---
 def nothing(x):
     pass
 
-cv2.createTrackbar('C', '3. Imagen Binarizada', 2, 20, nothing)  # valor que se resta al promedio local
+cv2.createTrackbar('Int.', '3. Imagen Binarizada', 2, 20, nothing)  # valor que se resta al promedio local
 
 while True:
-    # Capturamos un fotograma
+    
     ret, frame = capture.read()
     if not ret:
         print("No se pudo capturar el fotograma. Reintentando...")
         continue
     
-    # Volteamos horizontalmente
     frame = cv2.flip(frame, 1)
 
-    # --- ETAPA 1: Imagen original
     cv2.imshow('1. Imagen Original', frame)
 
-    # --- ETAPA 2: Escala de grises
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     cv2.imshow('2. Escala de Grises', gray)
 
-    # --- ETAPA 3: Adaptive Threshold
-    C = cv2.getTrackbarPos('C', '3. Imagen Binarizada')
+    C = cv2.getTrackbarPos('Int.', '3. Imagen Binarizada')
     bin_img = cv2.adaptiveThreshold(
         gray, 255, 
         cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
@@ -69,20 +59,16 @@ while True:
     )
     cv2.imshow('3. Imagen Binarizada', bin_img)
 
-   # --- ETAPA 4 (Adelantada): Operaciones morfológicas para limpiar
-    # Es mejor limpiar la imagen binarizada ANTES de buscar contornos.
     kernel = np.ones((5, 5), np.uint8)
     morphed = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel)
     morphed = cv2.morphologyEx(morphed, cv2.MORPH_CLOSE, kernel)
     cv2.imshow('4. Morfologia', morphed)
 
-    # --- ETAPA 5: Contornos (sobre la imagen limpia)
     contours, _ = cv2.findContours(morphed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contour_image = frame.copy()
     cv2.drawContours(contour_image, contours, -1, (0, 255, 0), 2)
     cv2.imshow('5. Contornos Detectados', contour_image)
 
-    # --- ETAPA 6: Predicción de formas
     result_frame = frame.copy()
     if contours:
         for contour in contours:
@@ -102,7 +88,6 @@ while True:
                 prediction = model.predict(hu_moments_reshaped)
                 label_text = int_to_label(int(prediction[0]))  
 
-                # Rectángulo para texto
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.putText(result_frame, f"{label_text}", (x, y - 10),
                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2, cv2.LINE_AA)
@@ -112,11 +97,10 @@ while True:
 
     cv2.imshow('6. Resultado Final', result_frame)
 
-    # Salir con 'q'
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Liberar recursos
+
 capture.release()
 cv2.destroyAllWindows()
 print("Programa terminado correctamente.")

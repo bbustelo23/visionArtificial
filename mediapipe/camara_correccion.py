@@ -25,6 +25,7 @@ else:
 while True:
     # Capturamos un fotograma (frame) de la cámara
     ret, frame = capture.read()
+    frame = cv2.flip(frame, 1)
 
     # --- MODIFICACIÓN CLAVE ---
     if not ret:
