@@ -23,7 +23,7 @@ cv2.namedWindow('2. Escala de Grises', cv2.WINDOW_NORMAL)
 cv2.namedWindow('3. Imagen Binarizada', cv2.WINDOW_NORMAL)
 cv2.namedWindow('4. Morfologia', cv2.WINDOW_NORMAL)
 cv2.namedWindow('5. Contornos Detectados', cv2.WINDOW_NORMAL)
-cv2.namedWindow('6. Resultado Final', cv2.WINDOW_NORMAL)
+cv2.namedWindow('6. Resultado Fin', cv2.WINDOW_NORMAL)
 
 # Posicionar ventanas para que reflejen el nuevo flujo de procesamiento
 cv2.moveWindow('1. Imagen Original', 50, 50)
