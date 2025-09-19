@@ -9,10 +9,9 @@ bin = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRES
 # Invert the image so the area of the UAV is filled with 1's
 inv = 255 - bin
 
-kernel_small = np.ones((3, 3), np.uint8)  # Kernel pequeño para detalles finos
-kernel_medium = np.ones((5, 5), np.uint8)  # Kernel mediano
+kernel_small = np.ones((3, 3), np.uint8)  
+kernel_medium = np.ones((5, 5), np.uint8)  
 
-#
 cleaned_opening = cv2.morphologyEx(inv, cv2.MORPH_OPEN, kernel_small)
 
 cleaned_closing = cv2.morphologyEx(cleaned_opening, cv2.MORPH_CLOSE, kernel_small)
