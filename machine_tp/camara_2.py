@@ -1,8 +1,8 @@
 from utiles.entrenando_tp import train_model
-from utiles.labels_tp import int_to_label  # 👈 importás tu función
-import cv2
+from utiles.labels_tp import int_to_label  
 import numpy as np
 import math
+import cv2
 
 # --- 1. ENTRENAR EL MODELO UNA SOLA VEZ ---
 print("Entrenando el modelo, por favor espera...")
@@ -66,17 +66,18 @@ while True:
     )
     cv2.imshow('3. Imagen Binarizada', bin_img)
 
-    # --- ETAPA 4: Contornos
-    contours, _ = cv2.findContours(bin_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    contour_image = frame.copy()
-    cv2.drawContours(contour_image, contours, -1, (0, 255, 0), 2)
-    cv2.imshow('4. Contornos Detectados', contour_image)
-
-    # --- ETAPA 5: Operaciones morfológicas
+   # --- ETAPA 5 (Adelantada): Operaciones morfológicas para limpiar
+    # Es mejor limpiar la imagen binarizada ANTES de buscar contornos.
     kernel = np.ones((5, 5), np.uint8)
     morphed = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel)
     morphed = cv2.morphologyEx(morphed, cv2.MORPH_CLOSE, kernel)
     cv2.imshow('5. Morfologia', morphed)
+
+    # --- ETAPA 4: Contornos (sobre la imagen limpia)
+    contours, _ = cv2.findContours(morphed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contour_image = frame.copy()
+    cv2.drawContours(contour_image, contours, -1, (0, 255, 0), 2)
+    cv2.imshow('4. Contornos Detectados', contour_image)
 
     # --- ETAPA 6: Predicción de formas
     result_frame = frame.copy()
@@ -109,7 +110,7 @@ while True:
     cv2.imshow('6. Resultado Final', result_frame)
 
     # Salir con 'q'
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(30) & 0xFF == ord('q'):
         break
 
 # Liberar recursos
