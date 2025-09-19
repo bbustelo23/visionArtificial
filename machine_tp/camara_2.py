@@ -16,21 +16,24 @@ if not capture.isOpened():
 else:
     print("Cámara iniciada. Presiona 'q' para salir.")
 
-# Crear ventanas
+# --- INICIO DE LA MODIFICACIÓN: Reordenar Ventanas ---
+# Crear ventanas con el orden lógico correcto
 cv2.namedWindow('1. Imagen Original', cv2.WINDOW_NORMAL)
 cv2.namedWindow('2. Escala de Grises', cv2.WINDOW_NORMAL)
 cv2.namedWindow('3. Imagen Binarizada', cv2.WINDOW_NORMAL)
-cv2.namedWindow('4. Contornos Detectados', cv2.WINDOW_NORMAL)
-cv2.namedWindow('5. Morfologia', cv2.WINDOW_NORMAL)
+cv2.namedWindow('4. Morfologia', cv2.WINDOW_NORMAL)
+cv2.namedWindow('5. Contornos Detectados', cv2.WINDOW_NORMAL)
 cv2.namedWindow('6. Resultado Final', cv2.WINDOW_NORMAL)
 
-# Posicionar ventanas
+# Posicionar ventanas para que reflejen el nuevo flujo de procesamiento
 cv2.moveWindow('1. Imagen Original', 50, 50)
-cv2.moveWindow('2. Escala de Grises', 350, 50)
-cv2.moveWindow('3. Imagen Binarizada', 650, 50)
-cv2.moveWindow('4. Contornos Detectados', 50, 400)
-cv2.moveWindow('5. Morfologia', 350, 400)
-cv2.moveWindow('6. Resultado Final', 650, 400)
+cv2.moveWindow('2. Escala de Grises', 450, 50)
+cv2.moveWindow('3. Imagen Binarizada', 850, 50)
+cv2.moveWindow('4. Morfologia', 50, 500)
+cv2.moveWindow('5. Contornos Detectados', 450, 500)
+cv2.moveWindow('6. Resultado Final', 850, 500)
+# --- FIN DE LA MODIFICACIÓN ---
+
 
 # --- TRACKBAR PARA AJUSTAR ILUMINACIÓN (parámetro C de adaptiveThreshold) ---
 def nothing(x):
@@ -66,18 +69,18 @@ while True:
     )
     cv2.imshow('3. Imagen Binarizada', bin_img)
 
-   # --- ETAPA 5 (Adelantada): Operaciones morfológicas para limpiar
+   # --- ETAPA 4 (Adelantada): Operaciones morfológicas para limpiar
     # Es mejor limpiar la imagen binarizada ANTES de buscar contornos.
     kernel = np.ones((5, 5), np.uint8)
     morphed = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel)
     morphed = cv2.morphologyEx(morphed, cv2.MORPH_CLOSE, kernel)
-    cv2.imshow('5. Morfologia', morphed)
+    cv2.imshow('4. Morfologia', morphed)
 
-    # --- ETAPA 4: Contornos (sobre la imagen limpia)
+    # --- ETAPA 5: Contornos (sobre la imagen limpia)
     contours, _ = cv2.findContours(morphed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contour_image = frame.copy()
     cv2.drawContours(contour_image, contours, -1, (0, 255, 0), 2)
-    cv2.imshow('4. Contornos Detectados', contour_image)
+    cv2.imshow('5. Contornos Detectados', contour_image)
 
     # --- ETAPA 6: Predicción de formas
     result_frame = frame.copy()
@@ -110,7 +113,7 @@ while True:
     cv2.imshow('6. Resultado Final', result_frame)
 
     # Salir con 'q'
-    if cv2.waitKey(30) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
 # Liberar recursos
