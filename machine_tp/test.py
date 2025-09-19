@@ -9,34 +9,24 @@ bin = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRES
 # Invert the image so the area of the UAV is filled with 1's
 inv = 255 - bin
 
-# TÉCNICAS DE LIMPIEZA DE IMAGEN
-
-# 1. Operaciones morfológicas para eliminar ruido
 kernel_small = np.ones((3, 3), np.uint8)  # Kernel pequeño para detalles finos
 kernel_medium = np.ones((5, 5), np.uint8)  # Kernel mediano
 
-# Opening: elimina ruido pequeño (erosión seguida de dilatación)
+#
 cleaned_opening = cv2.morphologyEx(inv, cv2.MORPH_OPEN, kernel_small)
 
-# Closing: rellena pequeños agujeros (dilatación seguida de erosión)
 cleaned_closing = cv2.morphologyEx(cleaned_opening, cv2.MORPH_CLOSE, kernel_small)
 
-# 2. Filtro de mediana para eliminar ruido tipo sal y pimienta
 median_filtered = cv2.medianBlur(cleaned_closing, 5)
 
-# 3. Encontrar y rellenar solo el contorno más grande (eliminar objetos pequeños)
 contours, _ = cv2.findContours(median_filtered, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-# Crear imagen limpia solo con el objeto más grande
 clean_image = np.zeros_like(median_filtered)
 if contours:
-    # Encontrar el contorno con mayor área
     largest_contour = max(contours, key=cv2.contourArea)
     
-    # Rellenar solo ese contorno
     cv2.fillPoly(clean_image, [largest_contour], 255)
 
-# 4. Suavizado adicional de bordes
 final_clean = cv2.morphologyEx(clean_image, cv2.MORPH_CLOSE, kernel_medium)
 
 # Mostrar todas las etapas del proceso
